@@ -1,0 +1,128 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "upload": "Upload",
+    "download": "Download",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "language": "Language"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "history": "History",
+    "settings": "Settings",
+    "getStarted": "Get Started"
+  },
+  "brand": {
+    "name": "nyayasetu.ai",
+    "tagline": "Legal Document Intelligence",
+    "description": "Making legal documents accessible through AI-powered analysis and plain-language explanations."
+  },
+  "hero": {
+    "title": "See Your Legal Documents Clearly",
+    "description": "Upload any legal document and get instant plain-language summaries, risk analysis, and actionable insights powered by advanced AI."
+  },
+  "upload": {
+    "title": "Upload Document",
+    "dragAndDrop": "Drag and drop your document here",
+    "orClickToSelect": "or click to select a file",
+    "supportedFormats": "Supported formats: DOCX, TXT, PDF",
+    "maxFileSize": "Maximum file size: 10MB",
+    "pasteText": "Or paste your document text here",
+    "textPlaceholder": "Paste your legal document text here...",
+    "documentType": "Document Type",
+    "autoDetect": "Auto-detect",
+    "employment": "Employment Contract",
+    "rental": "Rental Agreement",
+    "nda": "Non-Disclosure Agreement",
+    "terms": "Terms of Service",
+    "other": "Other",
+    "summaryLength": "Summary Length",
+    "brief": "Brief",
+    "standard": "Standard",
+    "detailed": "Detailed",
+    "analyze": "Analyze Document",
+    "analyzing": "Analyzing...",
+    "fileTooLarge": "File too large",
+    "fileTooLargeDesc": "Please select a file smaller than 10MB.",
+    "invalidFileType": "Invalid file type",
+    "invalidFileTypeDesc": "Please select a DOCX or TXT file. For PDF files, please copy and paste the text directly.",
+    "uploadError": "Upload failed",
+    "uploadErrorDesc": "Failed to upload document. Please try again.",
+    "analysisError": "Analysis failed",
+    "analysisErrorDesc": "Failed to analyze document. Please try again."
+  },
+  "analysis": {
+    "title": "Analysis Results",
+    "overview": "Analysis Overview",
+    "documentLength": "Document Length",
+    "words": "words",
+    "keyClauses": "Key Clauses",
+    "identified": "identified",
+    "riskLevel": "Risk Level",
+    "processingTime": "Processing Time",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low",
+    "summary": "Summary",
+    "keyTerms": "Key Terms",
+    "riskAssessment": "Risk Assessment",
+    "clauses": "Key Clauses",
+    "recommendations": "Recommendations",
+    "employer": "Employer",
+    "employee": "Employee",
+    "salary": "Salary",
+    "startDate": "Start Date",
+    "probation": "Probation Period"
+  },
+  "risk": {
+    "highRisk": "High Risk",
+    "mediumRisk": "Medium Risk",
+    "lowRisk": "Low Risk",
+    "riskItems": "Risk Items",
+    "noRisks": "No significant risks identified"
+  },
+  "chat": {
+    "title": "Ask Questions",
+    "placeholder": "Ask a question about your document...",
+    "send": "Send",
+    "thinking": "Thinking...",
+    "noDocument": "Please upload a document first to start asking questions.",
+    "error": "Failed to get answer. Please try again."
+  },
+  "welcome": {
+    "title": "Upload a Document to Get Started",
+    "description": "Choose a legal document from your device or paste the text directly. Our AI will analyze it and provide you with clear, actionable insights."
+  },
+  "analyzing": {
+    "title": "Analyzing Your Document",
+    "description": "Our AI is carefully reviewing your document to provide comprehensive insights..."
+  },
+  "footer": {
+    "product": "Product",
+    "features": "Features",
+    "pricing": "Pricing",
+    "api": "API Access",
+    "resources": "Resources",
+    "documentation": "Documentation",
+    "guides": "Legal Guides",
+    "support": "Support",
+    "company": "Company",
+    "about": "About",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "copyright": "© 2024 nyayasetu.ai. Built for hackathon demonstration."
+  }
+}

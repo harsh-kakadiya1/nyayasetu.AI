@@ -1,5 +1,12 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+// Debug API key loading
+console.log('🔍 Gemini API Key Status:', {
+  present: !!process.env.GEMINI_API_KEY,
+  length: process.env.GEMINI_API_KEY?.length || 0,
+  startsWithAI: process.env.GEMINI_API_KEY?.startsWith('AIzaSy') || false
+});
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
 export interface DocumentSummary {
@@ -44,8 +51,17 @@ export interface FullAnalysis {
   riskLevel: "high" | "medium" | "low";
 }
 
-export async function analyzeDocument(content: string, documentType?: string): Promise<FullAnalysis> {
+export async function analyzeDocument(content: string, documentType?: string, language: string = 'en'): Promise<FullAnalysis> {
   const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro" });
+  
+  const languageInstructions = {
+    'en': 'Respond in English with clear, jargon-free explanations.',
+    'hi': 'हिंदी में जवाब दें और कानूनी शब्दजाल को सरल भाषा में समझाएं।',
+    'gu': 'ગુજરાતીમાં જવાબ આપો અને કાનૂની શબ્દજાળને સરળ ભાષામાં સમજાવો।',
+    'mr': 'मराठीत उत्तर द्या आणि कायदेशीर शब्दजाल सोप्या भाषेत समजावून सांगा।',
+    'ta': 'தமிழில் பதிலளிக்கவும் மற்றும் சட்ட வார்த்தைகளை எளிய மொழியில் விளக்கவும்.',
+    'bn': 'বাংলায় উত্তর দিন এবং আইনি পরিভাষাগুলি সহজ ভাষায় ব্যাখ্যা করুন।'
+  };
   
   const systemPrompt = `You are a legal document analysis expert. Analyze the provided legal document and provide a comprehensive breakdown in JSON format.
 
@@ -60,6 +76,8 @@ Focus on:
 - Identifying unusual or potentially problematic terms
 - Providing practical, actionable advice
 - Risk assessment using "high", "medium", "low" levels
+
+Language Instructions: ${languageInstructions[language as keyof typeof languageInstructions] || languageInstructions['en']}
 
 Document type context: ${documentType || "auto-detect"}
 
@@ -105,6 +123,10 @@ Respond with valid JSON matching this structure:
 }`;
 
   try {
+    console.log('🚀 Starting Gemini analysis...');
+    console.log('📄 Content length:', content.length);
+    console.log('🌍 Language:', language);
+    
     const result = await model.generateContent({
       contents: [{ role: "user", parts: [{ text: `${systemPrompt}\n\nDocument to analyze:\n\n${content}` }] }],
       generationConfig: {
@@ -112,29 +134,52 @@ Respond with valid JSON matching this structure:
       },
     });
 
+    console.log('✅ Gemini API call successful');
     const response = await result.response;
     const analysisText = response.text();
+    
+    console.log('📝 Response length:', analysisText?.length || 0);
     
     if (!analysisText) {
       throw new Error("Empty response from Gemini API");
     }
 
+    console.log('🔍 Parsing JSON response...');
     const analysis: FullAnalysis = JSON.parse(analysisText);
     
     // Validate and ensure required fields
     if (!analysis.summary || !analysis.riskItems || !analysis.clauses || !analysis.recommendations) {
+      console.error('❌ Invalid analysis structure:', {
+        hasSummary: !!analysis.summary,
+        hasRiskItems: !!analysis.riskItems,
+        hasClauses: !!analysis.clauses,
+        hasRecommendations: !!analysis.recommendations
+      });
       throw new Error("Invalid analysis structure from Gemini API");
     }
 
+    console.log('✅ Analysis completed successfully');
     return analysis;
   } catch (error) {
-    console.error("Gemini analysis error:", error);
+    console.error("❌ Gemini analysis error:", error);
+    if (error instanceof SyntaxError) {
+      console.error("📝 JSON Parse Error - Raw response:", error.message);
+    }
     throw new Error(`Failed to analyze document: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 
-export async function answerQuestion(documentContent: string, question: string, previousContext?: string): Promise<string> {
+export async function answerQuestion(documentContent: string, question: string, previousContext?: string, language: string = 'en'): Promise<string> {
   const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+  
+  const languageInstructions = {
+    'en': 'Respond in English with clear, accessible language.',
+    'hi': 'हिंदी में जवाब दें और स्पष्ट, सुलभ भाषा का उपयोग करें।',
+    'gu': 'ગુજરાતીમાં જવાબ આપો અને સ્પષ્ટ, સુલભ ભાષાનો ઉપયોગ કરો।',
+    'mr': 'मराठीत उत्तर द्या आणि स्पष्ट, सुलभ भाषेचा वापर करा।',
+    'ta': 'தமிழில் பதிலளிக்கவும் மற்றும் தெளிவான, அணுகக்கூடிய மொழியைப் பயன்படுத்தவும்.',
+    'bn': 'বাংলায় উত্তর দিন এবং স্পষ্ট, সুলভ ভাষা ব্যবহার করুন।'
+  };
   
   const systemPrompt = `You are a legal document assistant. Answer questions about the provided legal document using only the information contained within it.
 
@@ -144,6 +189,8 @@ Rules:
 - Provide specific references to sections or clauses when possible
 - Use clear, accessible language
 - Keep responses concise but comprehensive
+
+Language Instructions: ${languageInstructions[language as keyof typeof languageInstructions] || languageInstructions['en']}
 
 ${previousContext ? `Previous conversation context:\n${previousContext}\n\n` : ''}
 

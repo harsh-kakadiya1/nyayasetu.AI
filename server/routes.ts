@@ -34,6 +34,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const { documentType, summaryLength } = req.body;
+      const language = req.headers['accept-language'] || 'en';
       
       // Parse the uploaded document
       const parsedDoc = await parseUploadedDocument(req.file);
@@ -50,7 +51,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Analyze document with Gemini
       const startTime = Date.now();
-      const analysis = await analyzeDocument(parsedDoc.content, documentType);
+      const analysis = await analyzeDocument(parsedDoc.content, documentType, language);
       const processingTime = `${((Date.now() - startTime) / 1000).toFixed(1)} seconds`;
 
       // Create analysis record
@@ -89,7 +90,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Analyze document via text input
   app.post("/api/documents/analyze-text", async (req, res) => {
     try {
-      const { content, documentType, summaryLength } = req.body;
+      const { content, documentType, summaryLength, language } = req.body;
+      const preferredLanguage = language || req.headers['accept-language'] || 'en';
 
       if (!content || typeof content !== 'string') {
         return res.status(400).json({ error: "Document content is required" });
@@ -110,7 +112,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Analyze document with Gemini
       const startTime = Date.now();
-      const analysis = await analyzeDocument(parsedDoc.content, documentType);
+      const analysis = await analyzeDocument(parsedDoc.content, documentType, preferredLanguage);
       const processingTime = `${((Date.now() - startTime) / 1000).toFixed(1)} seconds`;
 
       // Create analysis record
@@ -167,7 +169,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/analysis/:id/question", async (req, res) => {
     try {
       const { id } = req.params;
-      const { question } = req.body;
+      const { question, language } = req.body;
+      const preferredLanguage = language || req.headers['accept-language'] || 'en';
 
       if (!question || typeof question !== 'string') {
         return res.status(400).json({ error: "Question is required" });
@@ -188,7 +191,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const context = previousMessages.map(msg => `Q: ${msg.question}\nA: ${msg.answer}`).join('\n\n');
 
       // Get answer from Gemini
-      const answer = await answerQuestion(document.content, question, context);
+      const answer = await answerQuestion(document.content, question, context, preferredLanguage);
 
       // Save the Q&A
       const messageData = insertChatMessageSchema.parse({

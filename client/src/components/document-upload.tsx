@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { UploadCloud, FileText, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,6 +22,7 @@ export default function DocumentUpload({
   onAnalysisError,
   isAnalyzing 
 }: DocumentUploadProps) {
+  const { t, i18n } = useTranslation();
   const [textContent, setTextContent] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [documentType, setDocumentType] = useState("auto-detect");
@@ -35,8 +37,8 @@ export default function DocumentUpload({
     
     if (file.size > maxSize) {
       toast({
-        title: "File too large",
-        description: "Please select a file smaller than 10MB.",
+        title: t('upload.fileTooLarge'),
+        description: t('upload.fileTooLargeDesc'),
         variant: "destructive",
       });
       return;
@@ -44,8 +46,8 @@ export default function DocumentUpload({
 
     if (!allowedTypes.includes(file.type)) {
       toast({
-        title: "Invalid file type",
-        description: "Please select a DOCX or TXT file. For PDF files, please copy and paste the text directly.",
+        title: t('upload.invalidFileType'),
+        description: t('upload.invalidFileTypeDesc'),
         variant: "destructive",
       });
       return;
@@ -84,8 +86,8 @@ export default function DocumentUpload({
   const handleAnalyze = async () => {
     if (!selectedFile && !textContent.trim()) {
       toast({
-        title: "No document provided",
-        description: "Please upload a file or paste document text to analyze.",
+        title: t('upload.uploadError'),
+        description: t('upload.uploadErrorDesc'),
         variant: "destructive",
       });
       return;
@@ -106,13 +108,24 @@ export default function DocumentUpload({
         response = await fetch('/api/documents/upload', {
           method: 'POST',
           body: formData,
+          headers: {
+            'Accept-Language': i18n.language,
+          },
         });
       } else {
         // Handle text analysis
-        response = await apiRequest('POST', '/api/documents/analyze-text', {
-          content: textContent,
-          documentType,
-          summaryLength,
+        response = await fetch('/api/documents/analyze-text', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept-Language': i18n.language,
+          },
+          body: JSON.stringify({
+            content: textContent,
+            documentType: documentType === 'auto-detect' ? undefined : documentType,
+            summaryLength,
+            language: i18n.language,
+          }),
         });
       }
 
@@ -141,8 +154,8 @@ export default function DocumentUpload({
       onAnalysisError();
       
       toast({
-        title: "Analysis Failed",
-        description: error instanceof Error ? error.message : "Failed to analyze document. Please try again.",
+        title: t('upload.analysisError'),
+        description: t('upload.analysisErrorDesc'),
         variant: "destructive",
       });
     }
@@ -150,7 +163,7 @@ export default function DocumentUpload({
 
   return (
     <div className="bg-card rounded-lg border border-border p-6 mb-6" data-testid="card-document-upload">
-      <h3 className="text-lg font-semibold text-foreground mb-4" data-testid="text-upload-title">Upload Document</h3>
+      <h3 className="text-lg font-semibold text-foreground mb-4" data-testid="text-upload-title">{t('upload.title')}</h3>
       
       {/* File Upload Area */}
       <div 
@@ -176,10 +189,10 @@ export default function DocumentUpload({
           </>
         ) : (
           <>
-            <p className="text-foreground font-medium mb-2" data-testid="text-drop-instruction">Drop your document here</p>
-            <p className="text-sm text-muted-foreground mb-4">or click to browse</p>
+            <p className="text-foreground font-medium mb-2" data-testid="text-drop-instruction">{t('upload.dragAndDrop')}</p>
+            <p className="text-sm text-muted-foreground mb-4">{t('upload.orClickToSelect')}</p>
             <p className="text-xs text-muted-foreground" data-testid="text-file-requirements">
-              Supports DOCX, TXT files up to 10MB (for PDF files, copy and paste text directly)
+              {t('upload.supportedFormats')} - {t('upload.maxFileSize')}
             </p>
           </>
         )}
@@ -196,12 +209,12 @@ export default function DocumentUpload({
       {/* Text Input Alternative */}
       <div className="border-t border-border pt-4">
         <Label htmlFor="text-input" className="block text-sm font-medium text-foreground mb-2">
-          Or paste document text:
+          {t('upload.pasteText')}
         </Label>
         <Textarea
           id="text-input"
           className="w-full h-32 p-3 resize-none"
-          placeholder="Paste your legal document text here..."
+          placeholder={t('upload.textPlaceholder')}
           value={textContent}
           onChange={(e) => setTextContent(e.target.value)}
           disabled={!!selectedFile}
@@ -218,35 +231,35 @@ export default function DocumentUpload({
       <div className="mt-4 space-y-3">
         <div>
           <Label htmlFor="summary-length" className="block text-sm font-medium text-foreground mb-2">
-            Summary Length
+            {t('upload.summaryLength')}
           </Label>
           <Select value={summaryLength} onValueChange={setSummaryLength}>
             <SelectTrigger data-testid="select-summary-length">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="brief">Brief</SelectItem>
-              <SelectItem value="standard">Standard</SelectItem>
-              <SelectItem value="detailed">Detailed</SelectItem>
+              <SelectItem value="brief">{t('upload.brief')}</SelectItem>
+              <SelectItem value="standard">{t('upload.standard')}</SelectItem>
+              <SelectItem value="detailed">{t('upload.detailed')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
         
         <div>
           <Label htmlFor="document-type" className="block text-sm font-medium text-foreground mb-2">
-            Document Type (Optional)
+            {t('upload.documentType')}
           </Label>
           <Select value={documentType} onValueChange={setDocumentType}>
             <SelectTrigger data-testid="select-document-type">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="auto-detect">Auto-detect</SelectItem>
-              <SelectItem value="rental-agreement">Rental Agreement</SelectItem>
-              <SelectItem value="employment-contract">Employment Contract</SelectItem>
-              <SelectItem value="service-agreement">Service Agreement</SelectItem>
-              <SelectItem value="purchase-agreement">Purchase Agreement</SelectItem>
-              <SelectItem value="other">Other</SelectItem>
+              <SelectItem value="auto-detect">{t('upload.autoDetect')}</SelectItem>
+              <SelectItem value="rental-agreement">{t('upload.rental')}</SelectItem>
+              <SelectItem value="employment-contract">{t('upload.employment')}</SelectItem>
+              <SelectItem value="service-agreement">{t('upload.nda')}</SelectItem>
+              <SelectItem value="purchase-agreement">{t('upload.terms')}</SelectItem>
+              <SelectItem value="other">{t('upload.other')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -261,10 +274,10 @@ export default function DocumentUpload({
         {isAnalyzing ? (
           <>
             <div className="loading-spinner mr-2"></div>
-            Analyzing Document...
+            {t('upload.analyzing')}
           </>
         ) : (
-          "Analyze Document"
+          t('upload.analyze')
         )}
       </Button>
     </div>

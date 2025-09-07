@@ -5,6 +5,7 @@ import QAChat from "./qa-chat";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 interface AnalysisData {
   document: {
@@ -31,6 +32,7 @@ interface AnalysisResultsProps {
 }
 
 export default function AnalysisResults({ analysisData }: AnalysisResultsProps) {
+  const { t } = useTranslation();
   const { document, analysis } = analysisData;
   const [expandedClauses, setExpandedClauses] = useState<Set<number>>(new Set());
 
