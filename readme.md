@@ -1,5 +1,8 @@
 # NyayaSetu AI
 
+<img width="1900" height="955" alt="image" src="https://github.com/user-attachments/assets/0f5de7d8-cc10-48f1-80fd-36a850731b6a" />
+
+
 Demystifying Legal Documents with Intelligent Insights
 
 > See Your Legal Documents Clearly. **Understand Your Rights**, Identify Risks, Take Action.
