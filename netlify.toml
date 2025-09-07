@@ -1,8 +1,0 @@
-[build]
-  publish = "dist/public"
-  command = "npm run build:client"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
