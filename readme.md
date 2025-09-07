@@ -91,17 +91,17 @@ LegalLens AI (NyayaSetu AI) aims to empower people to clearly see their legal do
 ## Getting Started
 
 1. **Clone the Repo**
-  - git clone https://github.com/your-org/nyayasetu-ai.git
-  - cd nyayasetu-ai
+  - `git clone [https://github.com/your-org/nyayasetu-ai.git](https://github.com/harsh-kakadiya1/nyayasetu.AI.git)`
+  - `cd nyayasetu-ai`
   
 2. **Install Dependencies**
-  - pip install -r requirements.txt
+  - `pip install -r requirements.txt`
   
 3. **Set up Google Cloud API Keys**  
   - Obtain and configure credentials for Vertex AI & Document AI in your environment.
 
 4. **Run the Application**
-  - python app.py
+  - `python app.py`
 
 The app will be available at `http://localhost:8000` by default.
 
