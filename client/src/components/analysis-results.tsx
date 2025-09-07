@@ -15,7 +15,7 @@ interface AnalysisData {
   };
   analysis: {
     id: string;
-    summary: string;
+    summary: any;
     riskLevel: "high" | "medium" | "low";
     keyTerms: any;
     riskItems: any[];
@@ -44,7 +44,11 @@ export default function AnalysisResults({ analysisData }: AnalysisResultsProps) 
     setExpandedClauses(newExpanded);
   };
 
-  const documentTypeDisplay = analysis.keyTerms?.documentType || document.documentType || "Legal Document";
+  // Handle both string and object summary formats
+  const summaryText = typeof analysis.summary === 'object' ? analysis.summary.summary : analysis.summary;
+  const summaryKeyTerms = typeof analysis.summary === 'object' ? analysis.summary.keyTerms : analysis.keyTerms;
+  const documentTypeDisplay = (typeof analysis.summary === 'object' ? analysis.summary.documentType : null) || 
+                              document.documentType || "Legal Document";
 
   return (
     <div className="space-y-6">
@@ -58,13 +62,13 @@ export default function AnalysisResults({ analysisData }: AnalysisResultsProps) 
         </div>
         <div className="prose prose-sm max-w-none">
           <p className="text-foreground mb-4" data-testid="text-summary-content">
-            {analysis.summary}
+            {summaryText}
           </p>
-          {analysis.keyTerms && Object.keys(analysis.keyTerms).length > 0 && (
+          {summaryKeyTerms && Object.keys(summaryKeyTerms).length > 0 && (
             <div className="bg-accent/50 p-4 rounded-md" data-testid="section-key-terms">
               <h4 className="font-medium text-foreground mb-2" data-testid="text-key-terms-title">Key Parties & Terms</h4>
               <ul className="text-sm text-muted-foreground space-y-1">
-                {Object.entries(analysis.keyTerms).map(([key, value]) => {
+                {Object.entries(summaryKeyTerms).map(([key, value]) => {
                   if (!value) return null;
                   return (
                     <li key={key} data-testid={`text-key-term-${key}`}>
