@@ -91,7 +91,7 @@ LegalLens AI (NyayaSetu AI) aims to empower people to clearly see their legal do
 ## Getting Started
 
 1. **Clone the Repo**
-  - `git clone [https://github.com/your-org/nyayasetu-ai.git](https://github.com/harsh-kakadiya1/nyayasetu.AI.git)`
+  - git clone [https://github.com/your-org/nyayasetu-ai.git](https://github.com/harsh-kakadiya1/nyayasetu.AI.git)
   - `cd nyayasetu-ai`
   
 2. **Install Dependencies**
