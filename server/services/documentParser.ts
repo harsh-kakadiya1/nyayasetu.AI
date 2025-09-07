@@ -1,4 +1,3 @@
-import * as fs from "fs";
 import * as path from "path";
 import * as mammoth from "mammoth";
 
@@ -8,24 +7,24 @@ export interface ParsedDocument {
   filename?: string;
 }
 
-export async function parseTextFile(filePath: string): Promise<ParsedDocument> {
+export async function parseTextBuffer(buffer: Buffer, filename: string): Promise<ParsedDocument> {
   try {
-    const content = await fs.promises.readFile(filePath, 'utf-8');
+    const content = buffer.toString('utf-8');
     const wordCount = content.trim().split(/\s+/).length;
     
     return {
       content: content.trim(),
       wordCount,
-      filename: path.basename(filePath)
+      filename
     };
   } catch (error) {
     throw new Error(`Failed to parse text file: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 
-export async function parseDocxFile(filePath: string): Promise<ParsedDocument> {
+export async function parseDocxBuffer(buffer: Buffer, filename: string): Promise<ParsedDocument> {
   try {
-    const result = await mammoth.extractRawText({ path: filePath });
+    const result = await mammoth.extractRawText({ buffer });
     const content = result.value.trim();
     
     if (!content) {
@@ -37,7 +36,7 @@ export async function parseDocxFile(filePath: string): Promise<ParsedDocument> {
     return {
       content,
       wordCount,
-      filename: path.basename(filePath)
+      filename
     };
   } catch (error) {
     throw new Error(`Failed to parse DOCX file: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -50,21 +49,16 @@ export async function parseUploadedDocument(file: Express.Multer.File): Promise<
   try {
     switch (extension) {
       case '.txt':
-        return await parseTextFile(file.path);
+        return await parseTextBuffer(file.buffer, file.originalname);
       case '.docx':
-        return await parseDocxFile(file.path);
+        return await parseDocxBuffer(file.buffer, file.originalname);
       case '.pdf':
         throw new Error("PDF parsing is temporarily disabled. Please convert your PDF to text and paste it directly, or use a DOCX/TXT file instead.");
       default:
         throw new Error(`Unsupported file type: ${extension}. Please use DOCX or TXT files, or paste your text directly.`);
     }
-  } finally {
-    // Clean up the uploaded file after processing
-    try {
-      await fs.promises.unlink(file.path);
-    } catch (cleanupError) {
-      console.warn('Failed to clean up uploaded file:', cleanupError);
-    }
+  } catch (error) {
+    throw error;
   }
 }
 

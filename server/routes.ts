@@ -7,9 +7,9 @@ import { parseTextContent, parseUploadedDocument } from "./services/documentPars
 import multer from "multer";
 import path from "path";
 
-// Configure multer for file uploads
+// Configure multer for file uploads (memory storage - no files saved to disk)
 const upload = multer({
-  dest: 'uploads/',
+  storage: multer.memoryStorage(), // Store in memory instead of disk
   limits: {
     fileSize: 10 * 1024 * 1024, // 10MB limit
   },
