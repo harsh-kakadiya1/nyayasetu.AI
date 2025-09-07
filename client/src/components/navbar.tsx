@@ -24,8 +24,6 @@ export default function Navbar() {
           <Link href="/dashboard">
             <span className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors">Dashboard</span>
           </Link>
-          <a href="#" className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors">History</a>
-          <a href="#" className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors">Settings</a>
         </div>
       </div>
     </nav>
