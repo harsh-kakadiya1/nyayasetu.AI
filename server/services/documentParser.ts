@@ -1,5 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
+import pdf from "pdf-parse";
+import * as mammoth from "mammoth";
 
 export interface ParsedDocument {
   content: string;
@@ -22,22 +24,70 @@ export async function parseTextFile(filePath: string): Promise<ParsedDocument> {
   }
 }
 
+export async function parsePdfFile(filePath: string): Promise<ParsedDocument> {
+  try {
+    const dataBuffer = await fs.promises.readFile(filePath);
+    const data = await pdf(dataBuffer);
+    const content = data.text.trim();
+    
+    if (!content) {
+      throw new Error("No text content found in PDF. The file might be image-based or corrupted.");
+    }
+    
+    const wordCount = content.split(/\s+/).length;
+    
+    return {
+      content,
+      wordCount,
+      filename: path.basename(filePath)
+    };
+  } catch (error) {
+    throw new Error(`Failed to parse PDF file: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+}
+
+export async function parseDocxFile(filePath: string): Promise<ParsedDocument> {
+  try {
+    const result = await mammoth.extractRawText({ path: filePath });
+    const content = result.value.trim();
+    
+    if (!content) {
+      throw new Error("No text content found in DOCX file.");
+    }
+    
+    const wordCount = content.split(/\s+/).length;
+    
+    return {
+      content,
+      wordCount,
+      filename: path.basename(filePath)
+    };
+  } catch (error) {
+    throw new Error(`Failed to parse DOCX file: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+}
+
 export async function parseUploadedDocument(file: Express.Multer.File): Promise<ParsedDocument> {
   const extension = path.extname(file.originalname).toLowerCase();
   
-  switch (extension) {
-    case '.txt':
-      return parseTextFile(file.path);
-    case '.pdf':
-      // For now, we'll require manual text extraction
-      // In a production app, you'd use a PDF parsing library like pdf-parse
-      throw new Error("PDF parsing not implemented. Please copy and paste the text content.");
-    case '.docx':
-      // For now, we'll require manual text extraction  
-      // In a production app, you'd use a DOCX parsing library like mammoth
-      throw new Error("DOCX parsing not implemented. Please copy and paste the text content.");
-    default:
-      throw new Error(`Unsupported file type: ${extension}`);
+  try {
+    switch (extension) {
+      case '.txt':
+        return await parseTextFile(file.path);
+      case '.pdf':
+        return await parsePdfFile(file.path);
+      case '.docx':
+        return await parseDocxFile(file.path);
+      default:
+        throw new Error(`Unsupported file type: ${extension}. Please use PDF, DOCX, or TXT files.`);
+    }
+  } finally {
+    // Clean up the uploaded file after processing
+    try {
+      await fs.promises.unlink(file.path);
+    } catch (cleanupError) {
+      console.warn('Failed to clean up uploaded file:', cleanupError);
+    }
   }
 }
 
