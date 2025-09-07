@@ -31,7 +31,7 @@ export default function DocumentUpload({
 
   const handleFileSelect = (file: File) => {
     const maxSize = 10 * 1024 * 1024; // 10MB
-    const allowedTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
+    const allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
     
     if (file.size > maxSize) {
       toast({
@@ -45,7 +45,7 @@ export default function DocumentUpload({
     if (!allowedTypes.includes(file.type)) {
       toast({
         title: "Invalid file type",
-        description: "Please select a PDF, DOCX, or TXT file.",
+        description: "Please select a DOCX or TXT file. For PDF files, please copy and paste the text directly.",
         variant: "destructive",
       });
       return;
@@ -179,7 +179,7 @@ export default function DocumentUpload({
             <p className="text-foreground font-medium mb-2" data-testid="text-drop-instruction">Drop your document here</p>
             <p className="text-sm text-muted-foreground mb-4">or click to browse</p>
             <p className="text-xs text-muted-foreground" data-testid="text-file-requirements">
-              Supports PDF, DOCX, TXT files up to 10MB
+              Supports DOCX, TXT files up to 10MB (for PDF files, copy and paste text directly)
             </p>
           </>
         )}
@@ -187,7 +187,7 @@ export default function DocumentUpload({
           ref={fileInputRef}
           type="file"
           className="hidden"
-          accept=".pdf,.docx,.txt"
+          accept=".docx,.txt"
           onChange={handleFileInputChange}
           data-testid="input-file-upload"
         />

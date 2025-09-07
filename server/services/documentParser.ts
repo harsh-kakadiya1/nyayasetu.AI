@@ -1,6 +1,5 @@
 import * as fs from "fs";
 import * as path from "path";
-import pdf from "pdf-parse";
 import * as mammoth from "mammoth";
 
 export interface ParsedDocument {
@@ -21,28 +20,6 @@ export async function parseTextFile(filePath: string): Promise<ParsedDocument> {
     };
   } catch (error) {
     throw new Error(`Failed to parse text file: ${error instanceof Error ? error.message : 'Unknown error'}`);
-  }
-}
-
-export async function parsePdfFile(filePath: string): Promise<ParsedDocument> {
-  try {
-    const dataBuffer = await fs.promises.readFile(filePath);
-    const data = await pdf(dataBuffer);
-    const content = data.text.trim();
-    
-    if (!content) {
-      throw new Error("No text content found in PDF. The file might be image-based or corrupted.");
-    }
-    
-    const wordCount = content.split(/\s+/).length;
-    
-    return {
-      content,
-      wordCount,
-      filename: path.basename(filePath)
-    };
-  } catch (error) {
-    throw new Error(`Failed to parse PDF file: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 
@@ -74,12 +51,12 @@ export async function parseUploadedDocument(file: Express.Multer.File): Promise<
     switch (extension) {
       case '.txt':
         return await parseTextFile(file.path);
-      case '.pdf':
-        return await parsePdfFile(file.path);
       case '.docx':
         return await parseDocxFile(file.path);
+      case '.pdf':
+        throw new Error("PDF parsing is temporarily disabled. Please convert your PDF to text and paste it directly, or use a DOCX/TXT file instead.");
       default:
-        throw new Error(`Unsupported file type: ${extension}. Please use PDF, DOCX, or TXT files.`);
+        throw new Error(`Unsupported file type: ${extension}. Please use DOCX or TXT files, or paste your text directly.`);
     }
   } finally {
     // Clean up the uploaded file after processing
