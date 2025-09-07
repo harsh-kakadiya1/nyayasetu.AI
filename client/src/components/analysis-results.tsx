@@ -46,7 +46,10 @@ export default function AnalysisResults({ analysisData }: AnalysisResultsProps) 
 
   // Handle both string and object summary formats
   const summaryText = typeof analysis.summary === 'object' ? analysis.summary.summary : analysis.summary;
-  const summaryKeyTerms = typeof analysis.summary === 'object' ? analysis.summary.keyTerms : analysis.keyTerms;
+  // Only use keyTerms from summary if available, otherwise fallback to analysis.keyTerms
+  const summaryKeyTerms = (typeof analysis.summary === 'object' && analysis.summary.keyTerms)
+    ? analysis.summary.keyTerms
+    : analysis.keyTerms;
   const documentTypeDisplay = (typeof analysis.summary === 'object' ? analysis.summary.documentType : null) || 
                               document.documentType || "Legal Document";
 
