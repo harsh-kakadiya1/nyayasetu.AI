@@ -1,6 +1,6 @@
 # NyayaSetu AI
 
-<img width="1900" height="955" alt="image" src="https://github.com/user-attachments/assets/0f5de7d8-cc10-48f1-80fd-36a850731b6a" />
+<img width="1484" height="841" alt="image" src="https://github.com/user-attachments/assets/f313c2d2-7e0c-4a4d-882b-2a04ad3fc071" />
 
 
 Demystifying Legal Documents with Intelligent Insights
