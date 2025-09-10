@@ -124,5 +124,109 @@
     "privacy": "Privacy",
     "terms": "Terms",
     "copyright": "© 2024 nyayasetu.ai. Built for hackathon demonstration."
+  },
+  "home": {
+    "hero": {
+      "badge": "AI-Powered Legal Assistant",
+      "title": "Welcome to",
+      "subtitle": "NyayaSetu.AI",
+      "description": "Transform complex legal documents into clear, actionable insights with our advanced AI technology",
+      "getStartedButton": "Get Started Free",
+      "noRegistration": "No registration required • Instant analysis"
+    },
+    "stats": {
+      "documentsAnalyzed": "Documents Analyzed",
+      "accuracyRate": "Accuracy Rate",
+      "averageAnalysis": "Average Analysis",
+      "available": "Available"
+    },
+    "features": {
+      "title": "Powerful Features",
+      "subtitle": "Everything you need to understand and analyze legal documents with confidence",
+      "instantSummaries": {
+        "title": "Instant Summaries",
+        "description": "Get plain-language summaries of complex legal documents in seconds. No more struggling with legal jargon."
+      },
+      "riskAnalysis": {
+        "title": "AI-Powered Risk Analysis",
+        "description": "Identify potential risks, unusual terms, and key clauses automatically using advanced AI algorithms."
+      },
+      "clauseBreakdown": {
+        "title": "Clause Breakdown",
+        "description": "See original and simplified versions of important contract clauses with detailed explanations."
+      },
+      "accessible": {
+        "title": "Accessible for Everyone",
+        "description": "Designed for both legal professionals and everyday users with intuitive, user-friendly interface."
+      }
+    },
+    "benefits": {
+      "title": "Why Choose NyayaSetu.AI?",
+      "subtitle": "Empower yourself with intelligent legal document analysis",
+      "saveTime": {
+        "title": "Save Time and Money",
+        "description": "Reduce legal review costs and get instant analysis of your documents."
+      },
+      "understandSigning": {
+        "title": "Understand Before Signing",
+        "description": "Know your rights and obligations clearly before making any commitments."
+      },
+      "spotRisks": {
+        "title": "Spot Hidden Risks",
+        "description": "Identify potential issues and negotiate better terms with confidence."
+      },
+      "actionableInsights": {
+        "title": "Actionable Insights",
+        "description": "Get clear, practical recommendations you can act on immediately."
+      },
+      "readyToStart": {
+        "title": "Ready to Get Started?",
+        "description": "Join thousands of users who trust NyayaSetu.AI for their legal document analysis needs.",
+        "button": "Start Analyzing Documents"
+      }
+    },
+    "security": {
+      "title": "Security & Privacy First",
+      "subtitle": "Your documents and privacy are protected with enterprise-grade security",
+      "dataSafe": {
+        "title": "Your Data is Safe",
+        "description": "We never store your documents. All analysis is performed securely and confidentially with end-to-end encryption."
+      },
+      "privacyFirst": {
+        "title": "Privacy First",
+        "description": "Your privacy is our top priority. No data is shared with third parties, and all processing happens locally."
+      }
+    },
+    "disclaimer": {
+      "title": "Important Disclaimer",
+      "important": "Important:",
+      "informational": "This tool is for informational purposes only.",
+      "notRely": "Do not rely solely on its analysis for legal decisions.",
+      "consultAdvocate": "Always consult a qualified advocate or legal professional for advice specific to your situation.",
+      "button": "I Understand & Continue"
+    },
+    "footer": {
+      "brand": {
+        "name": "nyayasetu.ai",
+        "description": "Making legal documents accessible through AI-powered analysis and plain-language explanations."
+      },
+      "features": {
+        "title": "Features",
+        "documentAnalysis": "Document Analysis",
+        "riskAssessment": "Risk Assessment",
+        "plainLanguage": "Plain Language Summary",
+        "clauseBreakdown": "Clause Breakdown"
+      },
+      "security": {
+        "title": "Security",
+        "noDataStorage": "No Data Storage",
+        "endToEnd": "End-to-End Encryption",
+        "privacyProtected": "Privacy Protected",
+        "secureProcessing": "Secure Processing"
+      },
+      "copyright": "© 2024 nyayasetu.ai. Built for hackathon demonstration.",
+      "madeWith": "Made with AI for everyone",
+      "securePrivate": "Secure & Private"
+    }
   }
 }
