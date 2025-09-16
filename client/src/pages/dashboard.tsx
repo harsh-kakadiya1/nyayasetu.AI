@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DocumentUpload from "@/components/document-upload";
 import AnalysisResults from "@/components/analysis-results";
+import LoadingAnalysis from "@/components/loading-analysis";
 import { FileText } from "lucide-react";
 
 interface DocumentAnalysis {
@@ -100,13 +101,7 @@ export default function Dashboard() {
 					{/* Analysis Results Section */}
 					<div className="xl:col-span-2">
 						{isAnalyzing ? (
-							<div className="bg-card rounded-lg border border-border p-8 sm:p-12 text-center analysis-card" data-testid="card-analyzing">
-								<div className="loading-spinner mx-auto mb-4"></div>
-								<h3 className="text-base sm:text-lg font-semibold text-foreground mb-2">Analyzing Your Document</h3>
-								<p className="text-sm sm:text-base text-muted-foreground">
-									Our AI is carefully reviewing your document to provide comprehensive insights...
-								</p>
-							</div>
+							<LoadingAnalysis />
 						) : analysisResult ? (
 							<AnalysisResults analysisData={analysisResult} />
 						) : (

@@ -62,7 +62,29 @@
     "uploadError": "Upload failed",
     "uploadErrorDesc": "Failed to upload document. Please try again.",
     "analysisError": "Analysis failed",
-    "analysisErrorDesc": "Failed to analyze document. Please try again."
+    "analysisErrorDesc": "Failed to analyze document. Please try again.",
+    "serviceUnavailable": "Service Temporarily Unavailable",
+    "serviceUnavailableDesc": "The AI analysis service is experiencing high demand. Please try again in a few moments.",
+    "connectionError": "Connection Error", 
+    "connectionErrorDesc": "Unable to connect to the analysis service. Please check your internet connection and try again.",
+    "timeoutError": "Request Timeout",
+    "timeoutErrorDesc": "The analysis is taking longer than expected. Please try again with a shorter document."
+  },
+  "loading": {
+    "title": "Analyzing Your Document",
+    "description": "Our AI is carefully reviewing your document to provide comprehensive insights...",
+    "steps": {
+      "parsing": "Parsing document structure...",
+      "analyzing": "Analyzing content and clauses...",
+      "evaluating": "Evaluating risks and compliance...",
+      "finalizing": "Generating insights and recommendations..."
+    },
+    "stepNames": {
+      "parsing": "Parse",
+      "analyzing": "Analyze", 
+      "evaluating": "Evaluate",
+      "finalizing": "Finalize"
+    }
   },
   "analysis": {
     "title": "Analysis Results",

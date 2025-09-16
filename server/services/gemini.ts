@@ -127,39 +127,72 @@ Respond with valid JSON matching this structure:
     console.log('📄 Content length:', content.length);
     console.log('🌍 Language:', language);
     
-    const result = await model.generateContent({
-      contents: [{ role: "user", parts: [{ text: `${systemPrompt}\n\nDocument to analyze:\n\n${content}` }] }],
-      generationConfig: {
-        responseMimeType: "application/json",
-      },
-    });
+    // Retry logic for API overload
+    const maxRetries = 3;
+    let lastError: Error | null = null;
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        console.log(`📞 Gemini API attempt ${attempt}/${maxRetries}`);
+        
+        const result = await model.generateContent({
+          contents: [{ role: "user", parts: [{ text: `${systemPrompt}\n\nDocument to analyze:\n\n${content}` }] }],
+          generationConfig: {
+            responseMimeType: "application/json",
+          },
+        });
 
-    console.log('✅ Gemini API call successful');
-    const response = await result.response;
-    const analysisText = response.text();
-    
-    console.log('📝 Response length:', analysisText?.length || 0);
-    
-    if (!analysisText) {
-      throw new Error("Empty response from Gemini API");
+        console.log('✅ Gemini API call successful');
+        const response = await result.response;
+        const analysisText = response.text();
+        
+        console.log('📝 Response length:', analysisText?.length || 0);
+        
+        if (!analysisText) {
+          throw new Error("Empty response from Gemini API");
+        }
+
+        console.log('🔍 Parsing JSON response...');
+        const analysis: FullAnalysis = JSON.parse(analysisText);
+        
+        // Validate and ensure required fields
+        if (!analysis.summary || !analysis.riskItems || !analysis.clauses || !analysis.recommendations) {
+          console.error('❌ Invalid analysis structure:', {
+            hasSummary: !!analysis.summary,
+            hasRiskItems: !!analysis.riskItems,
+            hasClauses: !!analysis.clauses,
+            hasRecommendations: !!analysis.recommendations
+          });
+          throw new Error("Invalid analysis structure from Gemini API");
+        }
+
+        console.log('✅ Analysis completed successfully');
+        return analysis;
+        
+      } catch (apiError: any) {
+        lastError = apiError;
+        
+        // Check if it's an overload error (503 Service Unavailable)
+        if (apiError.message?.includes('overloaded') || apiError.message?.includes('503')) {
+          console.warn(`⚠️ API overloaded on attempt ${attempt}/${maxRetries}`);
+          
+          if (attempt < maxRetries) {
+            // Exponential backoff: 2s, 4s, 8s
+            const delay = Math.pow(2, attempt) * 1000;
+            console.log(`⏳ Waiting ${delay}ms before retry...`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+            continue;
+          }
+        } else {
+          // For non-overload errors, don't retry
+          throw apiError;
+        }
+      }
     }
-
-    console.log('🔍 Parsing JSON response...');
-    const analysis: FullAnalysis = JSON.parse(analysisText);
     
-    // Validate and ensure required fields
-    if (!analysis.summary || !analysis.riskItems || !analysis.clauses || !analysis.recommendations) {
-      console.error('❌ Invalid analysis structure:', {
-        hasSummary: !!analysis.summary,
-        hasRiskItems: !!analysis.riskItems,
-        hasClauses: !!analysis.clauses,
-        hasRecommendations: !!analysis.recommendations
-      });
-      throw new Error("Invalid analysis structure from Gemini API");
-    }
-
-    console.log('✅ Analysis completed successfully');
-    return analysis;
+    // If we get here, all retries failed
+    throw lastError || new Error("Failed to analyze document after multiple attempts");
+    
   } catch (error) {
     console.error("❌ Gemini analysis error:", error);
     if (error instanceof SyntaxError) {
@@ -199,15 +232,49 @@ Document content:\n${documentContent}
 Question: ${question}`;
 
   try {
-    const result = await model.generateContent(systemPrompt);
-    const response = await result.response;
-    const answer = response.text();
+    // Retry logic for API overload
+    const maxRetries = 3;
+    let lastError: Error | null = null;
     
-    if (!answer) {
-      throw new Error("Empty response from Gemini API");
-    }
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        console.log(`📞 QA API attempt ${attempt}/${maxRetries}`);
+        
+        const result = await model.generateContent(systemPrompt);
+        const response = await result.response;
+        const answer = response.text();
+        
+        if (!answer) {
+          throw new Error("Empty response from Gemini API");
+        }
 
-    return answer;
+        console.log('✅ QA response received successfully');
+        return answer;
+        
+      } catch (apiError: any) {
+        lastError = apiError;
+        
+        // Check if it's an overload error (503 Service Unavailable)
+        if (apiError.message?.includes('overloaded') || apiError.message?.includes('503')) {
+          console.warn(`⚠️ QA API overloaded on attempt ${attempt}/${maxRetries}`);
+          
+          if (attempt < maxRetries) {
+            // Exponential backoff: 1s, 2s, 4s (shorter for QA)
+            const delay = Math.pow(2, attempt - 1) * 1000;
+            console.log(`⏳ Waiting ${delay}ms before QA retry...`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+            continue;
+          }
+        } else {
+          // For non-overload errors, don't retry
+          throw apiError;
+        }
+      }
+    }
+    
+    // If we get here, all retries failed
+    throw lastError || new Error("Failed to answer question after multiple attempts");
+    
   } catch (error) {
     console.error("Gemini Q&A error:", error);
     throw new Error(`Failed to answer question: ${error instanceof Error ? error.message : 'Unknown error'}`);

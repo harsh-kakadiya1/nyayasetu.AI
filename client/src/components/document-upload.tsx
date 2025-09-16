@@ -154,9 +154,25 @@ export default function DocumentUpload({
       console.error("Analysis error:", error);
       onAnalysisError();
       
+      // Check for specific error types
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      let toastTitle = t('upload.analysisError');
+      let toastDescription = t('upload.analysisErrorDesc');
+      
+      if (errorMessage.includes('overloaded') || errorMessage.includes('503')) {
+        toastTitle = t('upload.serviceUnavailable');
+        toastDescription = t('upload.serviceUnavailableDesc');
+      } else if (errorMessage.includes('Failed to fetch')) {
+        toastTitle = t('upload.connectionError');
+        toastDescription = t('upload.connectionErrorDesc');
+      } else if (errorMessage.includes('timeout')) {
+        toastTitle = t('upload.timeoutError');
+        toastDescription = t('upload.timeoutErrorDesc');
+      }
+      
       toast({
-        title: t('upload.analysisError'),
-        description: t('upload.analysisErrorDesc'),
+        title: toastTitle,
+        description: toastDescription,
         variant: "destructive",
       });
     }
@@ -273,10 +289,14 @@ export default function DocumentUpload({
         data-testid="button-analyze-document"
       >
         {isAnalyzing ? (
-          <>
-            <div className="loading-spinner mr-2"></div>
+          <div className="flex items-center justify-center">
+            <div className="loading-dots mr-3">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
             {t('upload.analyzing')}
-          </>
+          </div>
         ) : (
           t('upload.analyze')
         )}

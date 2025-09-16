@@ -11,7 +11,8 @@ app.use((req, res, next) => {
     'http://localhost:3000',
     'http://localhost:5173',
     'https://nyayasetu-ai.netlify.app',
-    'https://amazing-platypus-1c5e9f.netlify.app'
+    'https://amazing-platypus-1c5e9f.netlify.app',
+    'https://nyaya-setu-ai.netlify.app'
   ];
   
   const origin = req.headers.origin;

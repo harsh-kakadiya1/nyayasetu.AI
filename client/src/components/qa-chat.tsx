@@ -111,8 +111,12 @@ export default function QAChat({ analysisId, documentContent }: QAChatProps) {
               </div>
               <div className="flex justify-start">
                 <div className="bg-card border border-border rounded-lg p-3 max-w-md" data-testid="message-pending-answer">
-                  <div className="flex items-center space-x-2">
-                    <div className="loading-spinner"></div>
+                  <div className="flex items-center space-x-3">
+                    <div className="loading-dots">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </div>
                     <p className="text-sm text-muted-foreground">Analyzing your question...</p>
                   </div>
                 </div>
