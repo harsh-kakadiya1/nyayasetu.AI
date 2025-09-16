@@ -37,10 +37,10 @@ export function ProgressIndicator({ currentStep, isProcessing = false }: Progres
   ];
 
   return (
-    <div className="w-full max-w-3xl mx-auto py-8">
+    <div className="w-full max-w-4xl mx-auto py-6 sm:py-8">
       <div className="flex items-center justify-between relative">
         {/* Progress bar background */}
-        <div className="absolute top-6 left-0 right-0 h-0.5 bg-gray-200 -z-10">
+        <div className="absolute top-5 sm:top-6 left-8 right-8 h-0.5 bg-gray-200 -z-10">
           <div 
             className="h-full bg-primary transition-all duration-1000 ease-out animate-progress"
             style={{ 
@@ -55,11 +55,11 @@ export function ProgressIndicator({ currentStep, isProcessing = false }: Progres
           const isCurrentProcessing = currentStep === step.id && isProcessing;
 
           return (
-            <div key={step.id} className="flex flex-col items-center relative z-10">
+            <div key={step.id} className="flex flex-col items-center relative z-10 flex-1 max-w-32">
               {/* Step circle */}
               <div
                 className={`
-                  w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 transform
+                  w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 transform
                   ${isCompleted 
                     ? 'bg-green-500 text-white scale-110' 
                     : isActive 
@@ -70,34 +70,35 @@ export function ProgressIndicator({ currentStep, isProcessing = false }: Progres
                 `}
               >
                 {isCompleted ? (
-                  <CheckCircle className="w-6 h-6 animate-scale-in" />
+                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 animate-scale-in" />
                 ) : isCurrentProcessing ? (
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 ) : (
-                  step.icon
+                  <div className="w-4 h-4 sm:w-5 sm:h-5">{step.icon}</div>
                 )}
               </div>
 
               {/* Step content */}
-              <div className="mt-3 text-center max-w-32">
+              <div className="mt-2 sm:mt-3 text-center">
                 <h3 
-                  className={`text-sm font-semibold transition-colors duration-300 ${
+                  className={`text-xs sm:text-sm font-semibold transition-colors duration-300 leading-tight ${
                     isActive ? 'text-primary' : isCompleted ? 'text-green-600' : 'text-gray-500'
                   }`}
                 >
                   {step.title}
                 </h3>
-                <p className="text-xs text-gray-400 mt-1 leading-tight">
+                <p className="text-xs text-gray-400 mt-1 leading-tight hidden sm:block">
                   {step.description}
                 </p>
               </div>
 
               {/* Processing indicator */}
               {isCurrentProcessing && (
-                <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2">
-                  <div className="flex items-center gap-1 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs animate-fade-in">
+                <div className="absolute -bottom-6 sm:-bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+                  <div className="flex items-center gap-1 bg-primary/10 text-primary px-2 sm:px-3 py-1 rounded-full text-xs animate-fade-in">
                     <Clock className="w-3 h-3 animate-spin" />
-                    <span>Processing...</span>
+                    <span className="hidden sm:inline">Processing...</span>
+                    <span className="sm:hidden">...</span>
                   </div>
                 </div>
               )}
@@ -107,14 +108,14 @@ export function ProgressIndicator({ currentStep, isProcessing = false }: Progres
       </div>
 
       {/* Current step description */}
-      <div className="text-center mt-8">
-        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
+      <div className="text-center mt-6 sm:mt-8">
+        <div className={`inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg transition-all duration-300 ${
           isProcessing 
             ? 'bg-blue-50 text-blue-700 border border-blue-200' 
             : 'bg-gray-50 text-gray-600'
         }`}>
           {isProcessing && <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />}
-          <span className="text-sm font-medium">
+          <span className="text-xs sm:text-sm font-medium">
             {isProcessing 
               ? "AI is analyzing your document..." 
               : `Step ${currentStep} of ${steps.length}`

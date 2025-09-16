@@ -7,7 +7,10 @@ export const API_ENDPOINTS = {
     upload: `${API_BASE_URL}/api/documents/upload`,
     analyzeText: `${API_BASE_URL}/api/documents/analyze-text`,
   },
-  // Add other endpoints as needed
+  analysis: {
+    getMessages: (analysisId: string) => `${API_BASE_URL}/api/analysis/${analysisId}/messages`,
+    askQuestion: (analysisId: string) => `${API_BASE_URL}/api/analysis/${analysisId}/question`,
+  },
 };
 
 export default API_ENDPOINTS;

@@ -43,10 +43,10 @@ export default function Dashboard() {
 
 	return (
 		<div className="min-h-screen bg-background">
-			<main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-				<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+			<main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+				<div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
 					{/* Document Upload Section */}
-					<div className="lg:col-span-1">
+					<div className="xl:col-span-1 space-y-6">
 						<DocumentUpload
 							onAnalysisStart={handleAnalysisStart}
 							onAnalysisComplete={handleAnalysisComplete}
@@ -56,25 +56,25 @@ export default function Dashboard() {
 
 						{/* Quick Stats Card */}
 						{analysisResult && (
-							<div className="bg-card rounded-lg border border-border p-6 mt-6" data-testid="card-quick-stats">
-								<h4 className="text-sm font-semibold text-foreground mb-4" data-testid="text-stats-title">Analysis Overview</h4>
-								<div className="space-y-3">
-									<div className="flex justify-between">
-										<span className="text-sm text-muted-foreground">Document Length</span>
-										<span className="text-sm font-medium" data-testid="text-word-count">
+							<div className="bg-card rounded-lg border border-border p-4 sm:p-6" data-testid="card-quick-stats">
+								<h4 className="text-sm font-semibold text-foreground mb-3 sm:mb-4" data-testid="text-stats-title">Analysis Overview</h4>
+								<div className="space-y-2 sm:space-y-3">
+									<div className="flex justify-between items-center">
+										<span className="text-xs sm:text-sm text-muted-foreground">Document Length</span>
+										<span className="text-xs sm:text-sm font-medium" data-testid="text-word-count">
 											{analysisResult.analysis.wordCount.toLocaleString()} words
 										</span>
 									</div>
-									<div className="flex justify-between">
-										<span className="text-sm text-muted-foreground">Key Clauses</span>
-										<span className="text-sm font-medium" data-testid="text-clause-count">
+									<div className="flex justify-between items-center">
+										<span className="text-xs sm:text-sm text-muted-foreground">Key Clauses</span>
+										<span className="text-xs sm:text-sm font-medium" data-testid="text-clause-count">
 											{analysisResult.analysis.clauses.length} identified
 										</span>
 									</div>
-									<div className="flex justify-between">
-										<span className="text-sm text-muted-foreground">Risk Level</span>
+									<div className="flex justify-between items-center">
+										<span className="text-xs sm:text-sm text-muted-foreground">Risk Level</span>
 										<span 
-											className={`text-sm font-medium ${
+											className={`text-xs sm:text-sm font-medium ${
 												analysisResult.analysis.riskLevel === 'high' 
 													? 'text-danger-foreground' 
 													: analysisResult.analysis.riskLevel === 'medium'
@@ -86,9 +86,9 @@ export default function Dashboard() {
 											{analysisResult.analysis.riskLevel.charAt(0).toUpperCase() + analysisResult.analysis.riskLevel.slice(1)}
 										</span>
 									</div>
-									<div className="flex justify-between">
-										<span className="text-sm text-muted-foreground">Processing Time</span>
-										<span className="text-sm font-medium" data-testid="text-processing-time">
+									<div className="flex justify-between items-center">
+										<span className="text-xs sm:text-sm text-muted-foreground">Processing Time</span>
+										<span className="text-xs sm:text-sm font-medium" data-testid="text-processing-time">
 											{analysisResult.analysis.processingTime}
 										</span>
 									</div>
@@ -98,24 +98,24 @@ export default function Dashboard() {
 					</div>
 
 					{/* Analysis Results Section */}
-					<div className="lg:col-span-2">
+					<div className="xl:col-span-2">
 						{isAnalyzing ? (
-							<div className="bg-card rounded-lg border border-border p-12 text-center analysis-card" data-testid="card-analyzing">
+							<div className="bg-card rounded-lg border border-border p-8 sm:p-12 text-center analysis-card" data-testid="card-analyzing">
 								<div className="loading-spinner mx-auto mb-4"></div>
-								<h3 className="text-lg font-semibold text-foreground mb-2">Analyzing Your Document</h3>
-								<p className="text-muted-foreground">
+								<h3 className="text-base sm:text-lg font-semibold text-foreground mb-2">Analyzing Your Document</h3>
+								<p className="text-sm sm:text-base text-muted-foreground">
 									Our AI is carefully reviewing your document to provide comprehensive insights...
 								</p>
 							</div>
 						) : analysisResult ? (
 							<AnalysisResults analysisData={analysisResult} />
 						) : (
-							<div className="bg-card rounded-lg border border-border p-12 text-center analysis-card" data-testid="card-welcome">
-								<FileText className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-								<h3 className="text-lg font-semibold text-foreground mb-2" data-testid="text-welcome-title">
+							<div className="bg-card rounded-lg border border-border p-8 sm:p-12 text-center analysis-card" data-testid="card-welcome">
+								<FileText className="w-12 h-12 sm:w-16 sm:h-16 text-muted-foreground mx-auto mb-4" />
+								<h3 className="text-base sm:text-lg font-semibold text-foreground mb-2" data-testid="text-welcome-title">
 									Upload a Document to Get Started
 								</h3>
-								<p className="text-muted-foreground max-w-md mx-auto" data-testid="text-welcome-description">
+								<p className="text-sm sm:text-base text-muted-foreground max-w-md mx-auto" data-testid="text-welcome-description">
 									Choose a legal document from your device or paste the text directly. Our AI will analyze it and provide you with clear, actionable insights.
 								</p>
 							</div>

@@ -91,6 +91,27 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    /* Improve mobile performance */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
+    /* Improve touch interactions */
+    touch-action: manipulation;
+  }
+
+  /* Mobile-first responsive design helpers */
+  html {
+    /* Better scaling on mobile devices */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+
+  /* Improve button and link touch targets on mobile */
+  button, a, [role="button"] {
+    touch-action: manipulation;
+    /* Minimum 44px touch target */
+    min-height: 44px;
   }
 
   /* Custom Scrollbar */
@@ -309,6 +330,31 @@
 /* Enhanced animation utilities */
 .animate-delay-200 {
   animation-delay: 200ms;
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 640px) {
+  /* Reduce animation complexity on mobile for better performance */
+  .animate-float,
+  .animate-pulse-glow,
+  .animate-ai-processing {
+    animation-duration: 2s;
+  }
+  
+  /* Better mobile touch feedback */
+  .touch-feedback:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease-out;
+  }
+  
+  /* Prevent zoom on input focus */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  textarea,
+  select {
+    font-size: 16px;
+  }
 }
 
 .animate-delay-400 {

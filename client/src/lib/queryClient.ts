@@ -17,7 +17,7 @@ export async function apiRequest(
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
     body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
+    // Remove credentials since we don't need authentication for these APIs
   });
 
   await throwIfResNotOk(res);
@@ -35,7 +35,7 @@ export const getQueryFn: <T>(options: {
       queryKey.join("/") as string;
     
     const res = await fetch(url, {
-      credentials: "include",
+      // Remove credentials since we don't need authentication for these APIs
     });
 
     if (unauthorizedBehavior === "returnNull" && res.status === 401) {

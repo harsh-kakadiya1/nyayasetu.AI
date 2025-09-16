@@ -56,27 +56,27 @@ export default function AnalysisResults({ analysisData }: AnalysisResultsProps) 
                               document.documentType || "Legal Document";
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Document Summary */}
-      <div className="bg-card rounded-lg border border-border p-6 analysis-card" data-testid="card-document-summary">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-foreground" data-testid="text-summary-title">Document Summary</h3>
-          <Badge variant="secondary" data-testid="badge-document-type">
+      <div className="bg-card rounded-lg border border-border p-4 sm:p-6 analysis-card" data-testid="card-document-summary">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 sm:mb-4 gap-2">
+          <h3 className="text-base sm:text-lg font-semibold text-foreground" data-testid="text-summary-title">Document Summary</h3>
+          <Badge variant="secondary" className="text-xs self-start sm:self-auto" data-testid="badge-document-type">
             {documentTypeDisplay}
           </Badge>
         </div>
         <div className="prose prose-sm max-w-none">
-          <p className="text-foreground mb-4" data-testid="text-summary-content">
+          <p className="text-sm sm:text-base text-foreground mb-3 sm:mb-4 leading-relaxed" data-testid="text-summary-content">
             {summaryText}
           </p>
           {summaryKeyTerms && Object.keys(summaryKeyTerms).length > 0 && (
-            <div className="bg-accent/50 p-4 rounded-md" data-testid="section-key-terms">
-              <h4 className="font-medium text-foreground mb-2" data-testid="text-key-terms-title">Key Parties & Terms</h4>
-              <ul className="text-sm text-muted-foreground space-y-1">
+            <div className="bg-accent/50 p-3 sm:p-4 rounded-md" data-testid="section-key-terms">
+              <h4 className="font-medium text-sm sm:text-base text-foreground mb-2" data-testid="text-key-terms-title">Key Parties & Terms</h4>
+              <ul className="text-xs sm:text-sm text-muted-foreground space-y-1">
                 {Object.entries(summaryKeyTerms).map(([key, value]) => {
                   if (!value) return null;
                   return (
-                    <li key={key} data-testid={`text-key-term-${key}`}>
+                    <li key={key} className="break-words" data-testid={`text-key-term-${key}`}>
                       • {key.charAt(0).toUpperCase() + key.slice(1)}: {String(value)}
                     </li>
                   );
@@ -91,40 +91,40 @@ export default function AnalysisResults({ analysisData }: AnalysisResultsProps) 
       <RiskAssessment riskItems={analysis.riskItems} riskLevel={analysis.riskLevel} />
 
       {/* Key Clauses Analysis */}
-      <div className="bg-card rounded-lg border border-border p-6 analysis-card" data-testid="card-clauses-analysis">
-        <h3 className="text-lg font-semibold text-foreground mb-4" data-testid="text-clauses-title">
+      <div className="bg-card rounded-lg border border-border p-4 sm:p-6 analysis-card" data-testid="card-clauses-analysis">
+        <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4" data-testid="text-clauses-title">
           Key Clauses Breakdown
         </h3>
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {analysis.clauses && analysis.clauses.length > 0 ? (
             analysis.clauses.map((clause: any, index: number) => (
               <div key={index} className="border border-border rounded-lg overflow-hidden" data-testid={`clause-item-${index}`}>
                 <button
-                  className="w-full p-4 text-left bg-muted hover:bg-muted/80 transition-colors flex justify-between items-center"
+                  className="w-full p-3 sm:p-4 text-left bg-muted hover:bg-muted/80 transition-colors flex justify-between items-center"
                   onClick={() => toggleClause(index)}
                   data-testid={`button-toggle-clause-${index}`}
                 >
-                  <span className="font-medium text-foreground" data-testid={`text-clause-title-${index}`}>
+                  <span className="font-medium text-sm sm:text-base text-foreground pr-2" data-testid={`text-clause-title-${index}`}>
                     {clause.title}
                   </span>
                   {expandedClauses.has(index) ? (
-                    <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                    <ChevronDown className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                   ) : (
-                    <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                    <ChevronRight className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                   )}
                 </button>
                 {expandedClauses.has(index) && (
-                  <div className="p-4 bg-card border-t border-border" data-testid={`clause-content-${index}`}>
-                    <div className="grid md:grid-cols-2 gap-4">
+                  <div className="p-3 sm:p-4 bg-card border-t border-border" data-testid={`clause-content-${index}`}>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
                       <div>
-                        <h5 className="text-sm font-medium text-foreground mb-2">Original Text</h5>
-                        <p className="text-xs text-muted-foreground bg-muted/50 p-3 rounded" data-testid={`text-clause-original-${index}`}>
+                        <h5 className="text-xs sm:text-sm font-medium text-foreground mb-2">Original Text</h5>
+                        <p className="text-xs text-muted-foreground bg-muted/50 p-2 sm:p-3 rounded leading-relaxed" data-testid={`text-clause-original-${index}`}>
                           {clause.originalText}
                         </p>
                       </div>
                       <div>
-                        <h5 className="text-sm font-medium text-foreground mb-2">Plain Language</h5>
-                        <p className="text-sm text-foreground" data-testid={`text-clause-simplified-${index}`}>
+                        <h5 className="text-xs sm:text-sm font-medium text-foreground mb-2">Plain Language</h5>
+                        <p className="text-xs sm:text-sm text-foreground leading-relaxed" data-testid={`text-clause-simplified-${index}`}>
                           {clause.simplifiedText}
                         </p>
                       </div>
@@ -145,16 +145,16 @@ export default function AnalysisResults({ analysisData }: AnalysisResultsProps) 
       <QAChat analysisId={analysis.id} documentContent={document.content} />
 
       {/* Action Recommendations */}
-      <div className="bg-card rounded-lg border border-border p-6 analysis-card" data-testid="card-recommendations">
-        <h3 className="text-lg font-semibold text-foreground mb-4" data-testid="text-recommendations-title">
+      <div className="bg-card rounded-lg border border-border p-4 sm:p-6 analysis-card" data-testid="card-recommendations">
+        <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4" data-testid="text-recommendations-title">
           Recommended Actions
         </h3>
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {analysis.recommendations && analysis.recommendations.length > 0 ? (
             analysis.recommendations.map((rec: any, index: number) => (
               <div 
                 key={index} 
-                className="flex items-start space-x-3 p-4 bg-accent/30 border border-accent rounded-lg"
+                className="flex items-start space-x-3 p-3 sm:p-4 bg-accent/30 border border-accent rounded-lg"
                 data-testid={`recommendation-item-${index}`}
               >
                 <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center mt-0.5 flex-shrink-0">
@@ -162,17 +162,17 @@ export default function AnalysisResults({ analysisData }: AnalysisResultsProps) 
                     {rec.priority || index + 1}
                   </span>
                 </div>
-                <div className="flex-1">
-                  <h4 className="font-medium text-foreground mb-2" data-testid={`text-rec-title-${index}`}>
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-medium text-sm sm:text-base text-foreground mb-2" data-testid={`text-rec-title-${index}`}>
                     {rec.title}
                   </h4>
-                  <p className="text-sm text-muted-foreground mb-3" data-testid={`text-rec-description-${index}`}>
+                  <p className="text-xs sm:text-sm text-muted-foreground mb-3 leading-relaxed" data-testid={`text-rec-description-${index}`}>
                     {rec.description}
                   </p>
-                  <div className="flex space-x-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <Button 
                       size="sm" 
-                      className="text-xs bg-primary text-primary-foreground hover:bg-primary/90"
+                      className="text-xs bg-primary text-primary-foreground hover:bg-primary/90 h-8"
                       data-testid={`button-rec-learn-more-${index}`}
                     >
                       Learn More
@@ -180,7 +180,7 @@ export default function AnalysisResults({ analysisData }: AnalysisResultsProps) 
                     <Button 
                       size="sm" 
                       variant="outline" 
-                      className="text-xs"
+                      className="text-xs h-8"
                       data-testid={`button-rec-complete-${index}`}
                     >
                       Mark Complete
@@ -190,7 +190,7 @@ export default function AnalysisResults({ analysisData }: AnalysisResultsProps) 
               </div>
             ))
           ) : (
-            <p className="text-muted-foreground text-center py-4" data-testid="text-no-recommendations">
+            <p className="text-sm text-muted-foreground text-center py-4" data-testid="text-no-recommendations">
               No specific recommendations available for this document.
             </p>
           )}

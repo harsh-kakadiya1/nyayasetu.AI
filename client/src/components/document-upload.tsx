@@ -163,12 +163,12 @@ export default function DocumentUpload({
   };
 
   return (
-    <div className="bg-card rounded-lg border border-border p-6 mb-6" data-testid="card-document-upload">
-      <h3 className="text-lg font-semibold text-foreground mb-4" data-testid="text-upload-title">{t('upload.title')}</h3>
+    <div className="bg-card rounded-lg border border-border p-4 sm:p-6 mb-4 sm:mb-6" data-testid="card-document-upload">
+      <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4" data-testid="text-upload-title">{t('upload.title')}</h3>
       
       {/* File Upload Area */}
       <div 
-        className={`document-upload-area rounded-lg p-8 text-center mb-4 cursor-pointer transition-colors ${
+        className={`document-upload-area rounded-lg p-6 sm:p-8 text-center mb-3 sm:mb-4 cursor-pointer transition-colors min-h-[120px] sm:min-h-[140px] flex flex-col justify-center ${
           isDragOver ? 'border-primary bg-accent' : ''
         }`}
         onDragOver={handleDragOver}
@@ -177,22 +177,22 @@ export default function DocumentUpload({
         onClick={() => fileInputRef.current?.click()}
         data-testid="area-file-drop"
       >
-        <UploadCloud className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+        <UploadCloud className="w-10 h-10 sm:w-12 sm:h-12 text-muted-foreground mx-auto mb-3 sm:mb-4" />
         {selectedFile ? (
           <>
-            <FileText className="w-8 h-8 text-primary mx-auto mb-2" />
-            <p className="text-foreground font-medium mb-2" data-testid="text-selected-file">
+            <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-primary mx-auto mb-2" />
+            <p className="text-sm sm:text-base text-foreground font-medium mb-1 sm:mb-2 px-2" data-testid="text-selected-file">
               {selectedFile.name}
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
             </p>
           </>
         ) : (
           <>
-            <p className="text-foreground font-medium mb-2" data-testid="text-drop-instruction">{t('upload.dragAndDrop')}</p>
-            <p className="text-sm text-muted-foreground mb-4">{t('upload.orClickToSelect')}</p>
-            <p className="text-xs text-muted-foreground" data-testid="text-file-requirements">
+            <p className="text-sm sm:text-base text-foreground font-medium mb-1 sm:mb-2 px-2" data-testid="text-drop-instruction">{t('upload.dragAndDrop')}</p>
+            <p className="text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-4 px-2">{t('upload.orClickToSelect')}</p>
+            <p className="text-xs text-muted-foreground px-2" data-testid="text-file-requirements">
               {t('upload.supportedFormats')} - {t('upload.maxFileSize')}
             </p>
           </>
@@ -208,13 +208,13 @@ export default function DocumentUpload({
       </div>
 
       {/* Text Input Alternative */}
-      <div className="border-t border-border pt-4">
-        <Label htmlFor="text-input" className="block text-sm font-medium text-foreground mb-2">
+      <div className="border-t border-border pt-3 sm:pt-4">
+        <Label htmlFor="text-input" className="block text-xs sm:text-sm font-medium text-foreground mb-2">
           {t('upload.pasteText')}
         </Label>
         <Textarea
           id="text-input"
-          className="w-full h-32 p-3 resize-none"
+          className="w-full h-24 sm:h-32 p-2 sm:p-3 resize-none text-sm"
           placeholder={t('upload.textPlaceholder')}
           value={textContent}
           onChange={(e) => setTextContent(e.target.value)}
@@ -229,13 +229,13 @@ export default function DocumentUpload({
       </div>
 
       {/* Analysis Options */}
-      <div className="mt-4 space-y-3">
+      <div className="mt-3 sm:mt-4 space-y-3">
         <div>
-          <Label htmlFor="summary-length" className="block text-sm font-medium text-foreground mb-2">
+          <Label htmlFor="summary-length" className="block text-xs sm:text-sm font-medium text-foreground mb-2">
             {t('upload.summaryLength')}
           </Label>
           <Select value={summaryLength} onValueChange={setSummaryLength}>
-            <SelectTrigger data-testid="select-summary-length">
+            <SelectTrigger className="h-9 sm:h-10 text-sm" data-testid="select-summary-length">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -247,11 +247,11 @@ export default function DocumentUpload({
         </div>
         
         <div>
-          <Label htmlFor="document-type" className="block text-sm font-medium text-foreground mb-2">
+          <Label htmlFor="document-type" className="block text-xs sm:text-sm font-medium text-foreground mb-2">
             {t('upload.documentType')}
           </Label>
           <Select value={documentType} onValueChange={setDocumentType}>
-            <SelectTrigger data-testid="select-document-type">
+            <SelectTrigger className="h-9 sm:h-10 text-sm" data-testid="select-document-type">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -267,7 +267,7 @@ export default function DocumentUpload({
       </div>
 
       <Button 
-        className="w-full mt-4 bg-primary text-primary-foreground hover:bg-primary/90"
+        className="w-full mt-3 sm:mt-4 bg-primary text-primary-foreground hover:bg-primary/90 h-10 sm:h-11 text-sm sm:text-base"
         onClick={handleAnalyze}
         disabled={isAnalyzing || (!selectedFile && !textContent.trim())}
         data-testid="button-analyze-document"

@@ -32,7 +32,7 @@ export default function LanguageSelector() {
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="flex items-center gap-2">
+        <Button variant="outline" size="sm" className="flex items-center gap-2 h-10 px-3">
           <Globe className="w-4 h-4" />
           <span className="hidden sm:inline">{currentLanguage.nativeName}</span>
           <span className="sm:hidden">{currentLanguage.code.toUpperCase()}</span>

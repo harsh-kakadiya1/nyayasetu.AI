@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { API_ENDPOINTS } from "@/lib/api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface ChatMessage {
@@ -26,21 +27,21 @@ export default function QAChat({ analysisId, documentContent }: QAChatProps) {
 
   // Fetch existing chat messages
   const { data: messages = [] } = useQuery<ChatMessage[]>({
-    queryKey: ['/api/analysis', analysisId, 'messages'],
+    queryKey: [API_ENDPOINTS.analysis.getMessages(analysisId)],
     enabled: !!analysisId,
   });
 
   // Mutation for asking questions
   const askQuestionMutation = useMutation({
     mutationFn: async (questionText: string) => {
-      const response = await apiRequest('POST', `/api/analysis/${analysisId}/question`, {
+      const response = await apiRequest('POST', API_ENDPOINTS.analysis.askQuestion(analysisId), {
         question: questionText,
       });
       return response.json();
     },
     onSuccess: () => {
       // Invalidate and refetch messages
-      queryClient.invalidateQueries({ queryKey: ['/api/analysis', analysisId, 'messages'] });
+      queryClient.invalidateQueries({ queryKey: [API_ENDPOINTS.analysis.getMessages(analysisId)] });
       setQuestion("");
       toast({
         title: "Question answered",
