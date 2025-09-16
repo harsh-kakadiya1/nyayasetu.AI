@@ -26,6 +26,25 @@ const upload = multer({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Health check endpoint
+  app.get("/", (req, res) => {
+    res.json({ 
+      message: "NyayaSetu API Server is running!", 
+      status: "healthy",
+      timestamp: new Date().toISOString(),
+      endpoints: [
+        "POST /api/documents/upload",
+        "POST /api/documents/analyze-text", 
+        "GET /api/analysis/:id/messages",
+        "POST /api/analysis/:id/chat"
+      ]
+    });
+  });
+
+  app.get("/health", (req, res) => {
+    res.json({ status: "healthy", timestamp: new Date().toISOString() });
+  });
+
   // Upload and analyze document via file
   app.post("/api/documents/upload", upload.single('document'), async (req, res) => {
     try {
