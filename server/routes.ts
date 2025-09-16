@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertDocumentSchema, insertAnalysisSchema, insertChatMessageSchema } from "@shared/schema";
+import { insertDocumentSchema, insertAnalysisSchema, insertChatMessageSchema } from "./schema";
 import { analyzeDocument, answerQuestion } from "./services/gemini";
 import { parseTextContent, parseUploadedDocument } from "./services/documentParser";
 import multer from "multer";
@@ -11,7 +11,7 @@ import path from "path";
 const upload = multer({
   storage: multer.memoryStorage(), // Store in memory instead of disk
   limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB limit
+    fileSize:  15 * 1024 * 1024, // 15MB limit
   },
   fileFilter: (req, file, cb) => {
     const allowedTypes = ['.pdf', '.docx', '.txt'];

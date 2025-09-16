@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type Document, type InsertDocument, type Analysis, type InsertAnalysis, type ChatMessage, type InsertChatMessage } from "@shared/schema";
+import { type User, type InsertUser, type Document, type InsertDocument, type Analysis, type InsertAnalysis, type ChatMessage, type InsertChatMessage } from "./schema";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
