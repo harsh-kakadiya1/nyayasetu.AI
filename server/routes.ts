@@ -1,9 +1,9 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";
-import { insertDocumentSchema, insertAnalysisSchema, insertChatMessageSchema } from "./schema";
-import { analyzeDocument, answerQuestion } from "./services/gemini";
-import { parseTextContent, parseUploadedDocument } from "./services/documentParser";
+import { storage } from "./storage.js";
+import { insertDocumentSchema, insertAnalysisSchema, insertChatMessageSchema } from "./schema.js";
+import { analyzeDocument, answerQuestion } from "./services/gemini.js";
+import { parseTextContent, parseUploadedDocument } from "./services/documentParser.js";
 import multer from "multer";
 import path from "path";
 
