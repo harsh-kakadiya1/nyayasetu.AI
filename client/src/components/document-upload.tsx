@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { API_ENDPOINTS } from "@/lib/api";
 
 interface DocumentUploadProps {
   onAnalysisStart: () => void;
@@ -105,7 +106,7 @@ export default function DocumentUpload({
         formData.append('documentType', documentType);
         formData.append('summaryLength', summaryLength);
 
-        response = await fetch('/api/documents/upload', {
+        response = await fetch(API_ENDPOINTS.documents.upload, {
           method: 'POST',
           body: formData,
           headers: {
@@ -114,7 +115,7 @@ export default function DocumentUpload({
         });
       } else {
         // Handle text analysis
-        response = await fetch('/api/documents/analyze-text', {
+        response = await fetch(API_ENDPOINTS.documents.analyzeText, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
