@@ -1,10 +1,17 @@
 [build]
-  base = "client"
   command = "npm run build"
-  publish = "dist"
+  publish = "dist/public"
 
 [build.environment]
   NODE_VERSION = "20.17.0"
+
+[functions]
+  directory = "dist"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/index/:splat"
+  status = 200
 
 [[redirects]]
   from = "/*"
