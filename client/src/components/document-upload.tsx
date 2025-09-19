@@ -34,7 +34,7 @@ export default function DocumentUpload({
 
   const handleFileSelect = (file: File) => {
     const maxSize = 10 * 1024 * 1024; // 10MB
-    const allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
+    const allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain', 'application/pdf'];
     
     if (file.size > maxSize) {
       toast({
@@ -217,7 +217,7 @@ export default function DocumentUpload({
           ref={fileInputRef}
           type="file"
           className="hidden"
-          accept=".docx,.txt"
+          accept=".docx,.txt,.pdf"
           onChange={handleFileInputChange}
           data-testid="input-file-upload"
         />

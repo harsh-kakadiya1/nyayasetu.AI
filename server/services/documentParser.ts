@@ -43,6 +43,30 @@ export async function parseDocxBuffer(buffer: Buffer, filename: string): Promise
   }
 }
 
+export async function parsePdfBuffer(buffer: Buffer, filename: string): Promise<ParsedDocument> {
+  try {
+    // Use require for CommonJS module compatibility
+    const pdfParse = require("pdf-parse");
+    
+    const data = await pdfParse(buffer);
+    const content = data.text.trim();
+    
+    if (!content) {
+      throw new Error("No text content found in PDF file. The PDF might be image-based or encrypted.");
+    }
+    
+    const wordCount = content.split(/\s+/).length;
+    
+    return {
+      content,
+      wordCount,
+      filename
+    };
+  } catch (error) {
+    throw new Error(`Failed to parse PDF file: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+}
+
 export async function parseUploadedDocument(file: Express.Multer.File): Promise<ParsedDocument> {
   const extension = path.extname(file.originalname).toLowerCase();
   
@@ -53,9 +77,9 @@ export async function parseUploadedDocument(file: Express.Multer.File): Promise<
       case '.docx':
         return await parseDocxBuffer(file.buffer, file.originalname);
       case '.pdf':
-        throw new Error("PDF parsing is temporarily disabled. Please convert your PDF to text and paste it directly, or use a DOCX/TXT file instead.");
+        return await parsePdfBuffer(file.buffer, file.originalname);
       default:
-        throw new Error(`Unsupported file type: ${extension}. Please use DOCX or TXT files, or paste your text directly.`);
+        throw new Error(`Unsupported file type: ${extension}. Please use PDF, DOCX, or TXT files.`);
     }
   } catch (error) {
     throw error;
