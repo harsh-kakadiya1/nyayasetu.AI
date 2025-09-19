@@ -1,5 +1,6 @@
 import * as path from "path";
 import * as mammoth from "mammoth";
+import * as pdfParse from "pdf-parse";
 
 export interface ParsedDocument {
   content: string;
@@ -45,9 +46,6 @@ export async function parseDocxBuffer(buffer: Buffer, filename: string): Promise
 
 export async function parsePdfBuffer(buffer: Buffer, filename: string): Promise<ParsedDocument> {
   try {
-    // Use require for CommonJS module compatibility
-    const pdfParse = require("pdf-parse");
-    
     const data = await pdfParse(buffer);
     const content = data.text.trim();
     
