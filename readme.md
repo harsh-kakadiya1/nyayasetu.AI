@@ -17,8 +17,12 @@ Demystifying Legal Documents with Intelligent Insights
 - [Features](#features)
 - [Advanced Features](#advanced-features)
 - [Technology & Ethics](#technology--ethics)
+- [API Endpoints](#api-endpoints)
+- [Multi-language Support](#multi-language-support)
 - [Target Users & Use Cases](#target-users--use-cases)
 - [Getting Started](#getting-started)
+- [Deployment](#deployment)
+- [Project Structure](#project-structure)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -45,40 +49,112 @@ LegalLens AI (NyayaSetu AI) aims to empower people to clearly see their legal do
 
 ## Features
 
-- **Interactive Q&A:** Ask questions and get factual answers derived directly from document content.
-- **Document Ingestion & Processing:** Upload and process documents, including scanned images.
-- **OCR Integration:** Optical Character Recognition enables text extraction from images/PDFs.
-- **Key Clause Identification & Simplified Explanation:** Highlights and explains important clauses.
+- **Interactive Q&A:** Ask questions and get factual answers derived directly from document content using Gemini AI.
+- **Multi-format Document Support:** Upload and process PDF, DOCX, and TXT files with automatic text extraction.
+- **Multi-language Analysis:** Get document analysis in 6 languages (English, Hindi, Gujarati, Marathi, Tamil, Bengali).
+- **Key Clause Identification:** AI-powered identification and simplified explanation of important legal clauses.
 - **Plain-Language Summary:** Comprehensive, easy-to-understand overview of the full document.
-- **Jargon Breakdown:** Explains legal terms in simple words.
-- **Dynamic Document Length:** Handles short notes to multi-page contracts.
-- **Chat Interface:** Engage with your document in a simple conversational format.[1]
+- **Risk Assessment:** Traffic-light system (🔴 High Risk, 🟡 Caution, 🟢 Standard) for clause evaluation.
+- **Real-time Processing:** Live progress indicators and animated document preview during analysis.
+- **Responsive Chat Interface:** Modern, mobile-friendly Q&A interface with persistent conversation history.
+- **Social Proof Elements:** Trust indicators, document counters, and user testimonials for credibility.
+- **Secure Processing:** In-memory document processing with no permanent storage for privacy protection.
 
 ---
 
 ## Advanced Features
 
-- **Unfair Terms Identifier:** Flags potential risks using a traffic-light system:
+- **AI-Powered Risk Analysis:** Flags potential risks using a traffic-light system:
   - 🔴 Red: High Risk/Warning
-  - 🟡 Yellow: Caution/Obligation
+  - 🟡 Yellow: Caution/Obligation  
   - 🟢 Green: Advantageous/Standard
-- **Explanation of Deviation:** AI details why a clause may be unusual or unfair.
-- **Key Dates & Reminders:** Automatically extracts important dates (start/end, payments) for user alerts or calendar integration.
-- **Personalized Action Plan:** Concrete, practical steps tailored to document type and user needs, generated dynamically by AI.[1]
+- **Smart Clause Breakdown:** AI identifies and explains complex legal clauses in simple terms.
+- **Multi-language Support:** Complete UI and analysis in 6 Indian languages with cultural context.
+- **Real-time Progress Tracking:** Animated workflow showing document upload → analysis → results.
+- **Interactive Document Preview:** Visual document representation with floating animations.
+- **Social Proof Integration:** Live counters, testimonials, and trust badges for user confidence.
+- **Responsive Design:** Optimized for desktop, tablet, and mobile devices.
+- **Secure File Handling:** 15MB file size limit with memory-only processing for privacy.
 
 ---
 
 ## Technology & Ethics
 
 **Core Stack:**
-- Google Cloud Vertex AI: Summarization, clause identification, risk analysis.
-- Google Document AI: Advanced OCR for document ingestion.
-- Python: Backend logic.
-- Cloud Storage: Secure, temporary storage of uploaded documents.
+- **Frontend**: React 18 + TypeScript + Vite
+- **Backend**: Node.js + Express + TypeScript
+- **AI Services**: Google Gemini AI (Gemini 2.5 Flash) for document analysis and Q&A
+- **Document Processing**: Mammoth (DOCX), PDF-Parse (PDF), Multer (file uploads)
+- **Database**: In-memory storage with Drizzle ORM (PostgreSQL ready)
+- **UI Framework**: Radix UI + Tailwind CSS + Framer Motion
+- **Internationalization**: React i18next (6 languages supported)
+- **Deployment**: Netlify (frontend) + Node.js server
+
+**Key Features:**
+- **Multi-language Support**: English, Hindi, Gujarati, Marathi, Tamil, Bengali
+- **Document Types**: PDF, DOCX, TXT file support
+- **Real-time Analysis**: Live document processing with progress indicators
+- **Interactive Q&A**: Chat interface for document queries
+- **Risk Assessment**: AI-powered risk analysis with traffic-light system
+- **Responsive Design**: Mobile-first approach with modern UI/UX
 
 **Ethical Considerations:**
 - Legal Disclaimer: NyayaSetu AI provides insights **for informational purposes only** and is not a substitute for professional legal advice.
-- Privacy & Security: All user data is encrypted both in transit and at rest on Google Cloud services.[1]
+- Privacy & Security: Documents processed in memory only, no permanent storage
+- Data Protection: CORS-enabled, secure file handling with size limits
+
+---
+
+## API Endpoints
+
+The NyayaSetu AI backend provides the following REST API endpoints:
+
+### Document Processing
+- `POST /api/documents/upload` - Upload and analyze document files (PDF, DOCX, TXT)
+- `POST /api/documents/analyze-text` - Analyze plain text content directly
+
+### Analysis & Chat
+- `GET /api/analysis/:id/messages` - Retrieve chat history for a document analysis
+- `POST /api/analysis/:id/chat` - Send questions about the analyzed document
+
+### System
+- `GET /` - API status and available endpoints
+- `GET /health` - Health check endpoint
+
+### Request Headers
+- `Accept-Language`: Language preference (en, hi, gu, mr, ta, bn)
+- `Content-Type`: multipart/form-data for file uploads
+
+### Response Format
+All API responses follow a consistent JSON format with appropriate HTTP status codes.
+
+---
+
+## Multi-language Support
+
+NyayaSetu AI supports **6 Indian languages** for both UI and document analysis:
+
+| Language | Code | Native Name |     Status   |
+|----------|------|-------------|--------------|
+| English  | en   | English     | ✅ Complete |
+| Hindi    | hi   | हिन्दी        | ✅ Complete |
+| Gujarati | gu   | ગુજરાતી      | ✅ Complete |
+| Marathi  | mr   | मराठी       | ✅ Complete  |
+| Tamil    | ta   | தமிழ்      | ✅ Complete  |
+| Bengali  | bn   | বাংলা       | ✅ Complete  |
+
+### Features
+- **Complete UI Translation**: All interface elements translated
+- **AI Analysis in Native Language**: Document summaries and risk assessments in user's preferred language
+- **Cultural Context**: Legal explanations adapted to local legal systems
+- **Language Detection**: Automatic detection based on browser settings
+- **Persistent Preferences**: Language choice saved across sessions
+
+### Usage
+1. Click the language selector in the top navigation
+2. Upload documents in any supported language
+3. Receive analysis results in your selected language
+4. Ask questions in your preferred language via the chat interface
 
 ---
 
@@ -93,21 +169,115 @@ LegalLens AI (NyayaSetu AI) aims to empower people to clearly see their legal do
 
 ## Getting Started
 
-1. **Clone the Repo**
-  - git clone [https://github.com/your-org/nyayasetu-ai.git](https://github.com/harsh-kakadiya1/nyayasetu.AI.git)
-  - `cd nyayasetu-ai`
-  
+### Prerequisites
+- Node.js 20.0.0 or higher
+- npm or yarn package manager
+- Google Gemini AI API key
+
+### Installation
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/harsh-kakadiya1/nyayasetu.AI.git
+   cd nyayasetu.AI
+   ```
+
 2. **Install Dependencies**
-  - `pip install -r requirements.txt`
-  
-3. **Set up Google Cloud API Keys**  
-  - Obtain and configure credentials for Vertex AI & Document AI in your environment.
+   ```bash
+   # Install root dependencies
+   npm install
+   
+   # Install client dependencies
+   cd client && npm install
+   
+   # Install server dependencies  
+   cd ../server && npm install
+   ```
 
-4. **Run the Application**
-  - `python app.py`
+3. **Environment Setup**
+   ```bash
+   # Create .env file in root directory
+   echo "GEMINI_API_KEY=your_gemini_api_key_here" > .env
+   ```
 
-The app will be available at `http://localhost:8000` by default.
+4. **Development Mode**
+   ```bash
+   # Start the development server (runs both frontend and backend)
+   npm run dev
+   ```
 
+5. **Production Build**
+   ```bash
+   # Build for production
+   npm run build
+   
+   # Start production server
+   npm start
+   ```
+
+### Access the Application
+- **Development**: `http://localhost:5000`
+- **Production**: Configure your hosting platform (Netlify, Vercel, etc.)
+
+### API Key Setup
+1. Get your Google Gemini AI API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Add it to your `.env` file as `GEMINI_API_KEY=your_key_here`
+3. Restart the application
+
+---
+
+## Deployment
+
+### Netlify (Recommended)
+1. Connect your GitHub repository to Netlify
+2. Set build command: `npm run build`
+3. Set publish directory: `dist/public`
+4. Add environment variable: `GEMINI_API_KEY=your_key_here`
+5. Deploy!
+
+### Other Platforms
+- **Vercel**: Supports Node.js with custom server
+- **Railway**: Full-stack deployment with database
+- **Heroku**: Traditional Node.js deployment
+- **DigitalOcean**: VPS deployment with Docker
+
+### Environment Variables
+```bash
+GEMINI_API_KEY=your_gemini_api_key_here
+NODE_ENV=production
+PORT=5000
+```
+
+---
+
+## Project Structure
+
+```
+nyayasetu.AI/
+├── client/                 # React frontend
+│   ├── src/
+│   │   ├── components/     # UI components
+│   │   ├── pages/         # Page components
+│   │   ├── i18n/          # Internationalization
+│   │   ├── lib/           # Utilities and API client
+│   │   └── hooks/         # Custom React hooks
+│   └── public/            # Static assets
+├── server/                # Node.js backend
+│   ├── services/          # AI and document processing
+│   ├── routes.ts          # API routes
+│   ├── schema.ts          # Database schemas
+│   └── storage.ts         # Data storage layer
+├── shared/                # Shared types and schemas
+├── dist/                  # Production build output
+└── package.json           # Root package configuration
+```
+
+### Key Directories
+- **`client/src/components/`**: Reusable UI components (Radix UI + Tailwind)
+- **`client/src/i18n/`**: Multi-language translation files
+- **`server/services/`**: Gemini AI integration and document parsing
+- **`server/routes.ts`**: REST API endpoint definitions
+- **`shared/`**: TypeScript types shared between frontend and backend
 
 ---
 
