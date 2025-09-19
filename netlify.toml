@@ -1,9 +1,10 @@
 [build]
-  command = "npm run build"
+  command = "npm install --legacy-peer-deps && npm run build"
   publish = "dist/public"
 
 [build.environment]
   NODE_VERSION = "20.17.0"
+  NPM_FLAGS = "--legacy-peer-deps"
 
 [functions]
   directory = "dist"

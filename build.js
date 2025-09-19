@@ -2,6 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
 
+// Install dependencies first with legacy peer deps if needed
+console.log('Installing client dependencies...');
+try {
+  execSync('cd client && npm install --legacy-peer-deps', { stdio: 'inherit' });
+} catch (error) {
+  console.log('Client dependencies already installed or error occurred');
+}
+
 // Build client
 console.log('Building client...');
 execSync('cd client && npm run build', { stdio: 'inherit' });
