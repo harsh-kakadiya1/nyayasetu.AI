@@ -7,11 +7,14 @@ import { useTranslation } from "react-i18next";
 import { SocialProofIndicators } from "@/components/social-proof";
 import { ProgressIndicator } from "@/components/progress-indicator";
 import { AnimatedDocumentPreview } from "@/components/animated-document-preview";
+import { useAnalysis } from "@/contexts/AnalysisContext";
+import AnalysisResults from "@/components/analysis-results";
 
 export default function Home() {
   const { t } = useTranslation();
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [location, setLocation] = useLocation();
+  const { analysisResult } = useAnalysis();
 
   const handleGetStarted = () => {
     setShowDisclaimer(true);
@@ -25,6 +28,26 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <main className="flex-1">
+        {/* Analysis Results Section - Show if analysis exists */}
+        {analysisResult && (
+          <section className="py-8 px-4 sm:px-6 lg:px-8 bg-card/30 border-b border-border">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-foreground">Your Document Analysis</h2>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setLocation("/dashboard")}
+                  className="flex items-center gap-2"
+                >
+                  <FileText className="w-4 h-4" />
+                  View Full Analysis
+                </Button>
+              </div>
+              <AnalysisResults analysisData={analysisResult} />
+            </div>
+          </section>
+        )}
+
         {/* Hero Section */}
         <section className="relative bg-background py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto text-center">

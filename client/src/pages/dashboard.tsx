@@ -1,8 +1,8 @@
-import { useState } from "react";
 import DocumentUpload from "@/components/document-upload";
 import AnalysisResults from "@/components/analysis-results";
 import LoadingAnalysis from "@/components/loading-analysis";
 import { FileText } from "lucide-react";
+import { useAnalysis } from "@/contexts/AnalysisContext";
 
 interface DocumentAnalysis {
 	document: {
@@ -25,8 +25,7 @@ interface DocumentAnalysis {
 }
 
 export default function Dashboard() {
-	const [analysisResult, setAnalysisResult] = useState<DocumentAnalysis | null>(null);
-	const [isAnalyzing, setIsAnalyzing] = useState(false);
+	const { analysisResult, isAnalyzing, setAnalysisResult, setIsAnalyzing } = useAnalysis();
 
 	const handleAnalysisComplete = (result: DocumentAnalysis) => {
 		setAnalysisResult(result);

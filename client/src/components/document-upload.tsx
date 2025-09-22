@@ -34,7 +34,11 @@ export default function DocumentUpload({
 
   const handleFileSelect = (file: File) => {
     const maxSize = 10 * 1024 * 1024; // 10MB
-    const allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
+    const allowedTypes = [
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // DOCX
+      'text/plain', // TXT
+      'application/pdf' // PDF
+    ];
     
     if (file.size > maxSize) {
       toast({
@@ -211,13 +215,16 @@ export default function DocumentUpload({
             <p className="text-xs text-muted-foreground px-2" data-testid="text-file-requirements">
               {t('upload.supportedFormats')} - {t('upload.maxFileSize')}
             </p>
+            <p className="text-xs text-orange-600 px-2 mt-1">
+              Note: Some PDF files may have compatibility issues. If PDF upload fails, try converting to DOCX or paste text directly.
+            </p>
           </>
         )}
         <input
           ref={fileInputRef}
           type="file"
           className="hidden"
-          accept=".docx,.txt"
+          accept=".pdf,.docx,.txt"
           onChange={handleFileInputChange}
           data-testid="input-file-upload"
         />

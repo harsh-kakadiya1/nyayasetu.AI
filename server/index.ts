@@ -9,10 +9,13 @@ const app = express();
 app.use((req, res, next) => {
   const allowedOrigins = [
     'http://localhost:3000',
+    'http://localhost:3001',
     'http://localhost:5173',
     'https://nyayasetu-ai.netlify.app',
     'https://amazing-platypus-1c5e9f.netlify.app',
-    'https://nyaya-setu-ai.netlify.app'
+    'https://nyaya-setu-ai.netlify.app',
+    'https://nyayasetu-ai.onrender.com',
+    'https://nyayasetu-ai-backend.onrender.com'
   ];
   
   const origin = req.headers.origin;
