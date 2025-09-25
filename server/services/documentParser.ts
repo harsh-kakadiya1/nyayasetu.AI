@@ -78,6 +78,7 @@ export async function parseDocxBuffer(buffer: Buffer, filename: string): Promise
 
 export async function parsePdfBuffer(buffer: Buffer, filename: string): Promise<ParsedDocument> {
   try {
+<<<<<<< HEAD
     // Use pdfjs-dist for Node.js (polyfills are set up at module level)
     const pdfjsLib = await import("pdfjs-dist");
     
@@ -114,6 +115,16 @@ export async function parsePdfBuffer(buffer: Buffer, filename: string): Promise<
     
     if (!content || content.length < 10) {
       throw new Error("No readable text content found in PDF file. The PDF might be image-based or corrupted.");
+=======
+    // Use require for CommonJS module compatibility
+    const pdfParse = require("pdf-parse");
+    
+    const data = await pdfParse(buffer);
+    const content = data.text.trim();
+    
+    if (!content) {
+      throw new Error("No text content found in PDF file. The PDF might be image-based or encrypted.");
+>>>>>>> c260e470d6ba4db5f25d81054bfddf981f6de0ad
     }
     
     const wordCount = content.split(/\s+/).length;
@@ -123,6 +134,7 @@ export async function parsePdfBuffer(buffer: Buffer, filename: string): Promise<
       wordCount,
       filename
     };
+<<<<<<< HEAD
     
   } catch (error) {
     console.error("PDF parsing error:", error);
@@ -158,6 +170,10 @@ export async function parsePdfBuffer(buffer: Buffer, filename: string): Promise<
     
     // Generic fallback error message
     throw new Error("PDF parsing failed. Please try converting your PDF to DOCX or TXT format, or copy and paste the text directly into the text input field.");
+=======
+  } catch (error) {
+    throw new Error(`Failed to parse PDF file: ${error instanceof Error ? error.message : 'Unknown error'}`);
+>>>>>>> c260e470d6ba4db5f25d81054bfddf981f6de0ad
   }
 }
 
@@ -173,7 +189,11 @@ export async function parseUploadedDocument(file: Express.Multer.File): Promise<
       case '.pdf':
         return await parsePdfBuffer(file.buffer, file.originalname);
       default:
+<<<<<<< HEAD
         throw new Error(`Unsupported file type: ${extension}. Please use PDF, DOCX, or TXT files, or paste your text directly.`);
+=======
+        throw new Error(`Unsupported file type: ${extension}. Please use PDF, DOCX, or TXT files.`);
+>>>>>>> c260e470d6ba4db5f25d81054bfddf981f6de0ad
     }
   } catch (error) {
     throw error;
